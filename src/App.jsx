@@ -1,8 +1,9 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css'
 import usePing from './hooks/apis/queries/usePing'
+import { CreateProject } from './pages/CreateProject';
 
-function App() {
-
+export const App = () => {
   const {isLoading, data} = usePing();
 
   if(isLoading){
@@ -12,11 +13,10 @@ function App() {
       </>
     )
   }
+  console.log(data);
   return (
-    <>
-      Hello {data.message}
-    </>
+    <Routes>
+      <Route path="/" element={<CreateProject />} />
+    </Routes>
   )
 }
-
-export default App

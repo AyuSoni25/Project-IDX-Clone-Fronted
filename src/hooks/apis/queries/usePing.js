@@ -4,7 +4,7 @@ import { pingCheck } from "../../../apis/ping";
 export default function usePing(){
     const {isLoading, isError, error, data} = useQuery({
         queryFn: pingCheck,
-        queryKey: 'ping',
+        queryKey: ['ping'],
         staleTime: 10000, 
     });
 
