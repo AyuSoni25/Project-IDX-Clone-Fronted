@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Editor } from "../components/molecules/Editor/Editor";
+import { EditorComponent } from "../components/molecules/Editor/Editor";
 
 export const Playground = () => {
 
@@ -9,7 +9,7 @@ export const Playground = () => {
         <div>
             Playground
             {params.projectId}
-            <Editor></Editor>
+            <EditorComponent/>
         </div>
     );
 }
