@@ -2,7 +2,6 @@ import Editor from '@monaco-editor/react';
 import { useEffect, useState } from 'react';
 
 export const EditorComponent = () => {
-
     const [editorState, setEditorState] = useState({
         theme: null
     });
@@ -27,7 +26,7 @@ export const EditorComponent = () => {
         <>
             {   editorState.theme &&
                 <Editor 
-                    height={'80vh'}
+                    height={'100vh'}
                     width={'100%'}
                     defaultLanguage='javascript'
                     defaultValue='// Welcome to the playground'
