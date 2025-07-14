@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { FileIcon } from "../../atoms/FileIcon/Fileicon";
 import { useEditorSocketStore } from "../../../store/editorSocketStore";
+import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
 
 export const TreeNode = ({
     fileFolderData
@@ -9,6 +10,13 @@ export const TreeNode = ({
 
     const [visibility, setVisibility] = useState({});
     const { editorSocket } = useEditorSocketStore();
+
+    const {
+        setFile,
+        setIsOpen: setFileContextMenuIsOpen,
+        setX: setFileContextMenuX,
+        setY: setFileContextMenuY
+    } = useFileContextMenuStore();
 
     function toggleVisibility(name) {
         setVisibility({
@@ -29,8 +37,17 @@ export const TreeNode = ({
         })
     }
 
+    function handleContextMenuForFiles(e, path) {
+        e.preventDefault();
+        console.log("Right clicked on", path, e);
+        setFile(path);
+        setFileContextMenuX(e.clientX);
+        setFileContextMenuY(e.clientY);
+        setFileContextMenuIsOpen(true);
+    }
+
     useEffect(() => {
-        console.log("Visibility chanmged", visibility); 
+        console.log("Visibility changed", visibility); 
     }, [visibility])
 
     return (
@@ -51,8 +68,9 @@ export const TreeNode = ({
                         outline: "none",
                         color: "white",
                         backgroundColor: "transparent",
-                        paddingTop: "15px",
-                        fontSize: "16px"
+                        padding: "15px",
+                        fontSize: "16px",
+                        marginTop: "10px"
                     }}
                 >
                     {visibility[fileFolderData.name] ? <IoIosArrowDown /> : <IoIosArrowForward />}
@@ -60,16 +78,19 @@ export const TreeNode = ({
                 </button>
             ) : (
                 /** If the current node is not a folder, render it as a p */
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "start" }}>
                     <FileIcon extension={computeExtension(fileFolderData)} />
                     <p
                         style={{
-                            paddingTop: "5px",
+                            paddingTop: "15px",
+                            paddingBottom: "15px",
+                            marginTop: "8px",
                             fontSize: "15px",
                             cursor: "pointer",
-                            marginLeft: "5px",
+                            marginLeft: "18px",
                             // color: "black"
                         }}
+                        onContextMenu={(e) => handleContextMenuForFiles(e, fileFolderData.path)}
                         onDoubleClick={() => handleDoubleClick(fileFolderData)}
                     >
                         {fileFolderData.name}
