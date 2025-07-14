@@ -2,7 +2,7 @@ import axiosInstance from "../config/axiosConfig"
 
 export const createProject = async () => {
     try{
-        const response = await axiosInstance.post('/projects');
+        const response = await axiosInstance.post('/api/v1/projects');
         console.log(response);
         return response;
     } catch(error){
@@ -13,7 +13,7 @@ export const createProject = async () => {
 
 export const getProjectTree = async ({ projectId }) => {
     try {
-        const response = await axiosInstance.get(`/projects/${projectId}/tree`);
+        const response = await axiosInstance.get(`/api/v1/projects/${projectId}/tree`);
         console.log(response.data);
         return response?.data?.data;
     } catch(error) {
