@@ -6,6 +6,7 @@ import { useTreeStructureStore } from "../store/treeStructureStore";
 import { TreeStructure } from "../components/organisms/TreeStructure/TreeStructure";
 import { useEditorSocketStore } from "../store/editorSocketStore";
 import { io } from "socket.io-client";
+import { BrowserTerminal } from "../components/molecules/BrowserTerminal/BrowserTerminal";
 
 export const Playground = () => {
   const { projectId: projectIdFromUrl } = useParams();
@@ -49,6 +50,10 @@ export const Playground = () => {
       </div>
       <EditorButton isActive={false} />
       <EditorButton isActive={true} />
+      <div>
+        <BrowserTerminal />
+      </div>
+
     </>
   );
 };
