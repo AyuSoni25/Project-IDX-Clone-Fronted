@@ -7,13 +7,20 @@ import { TreeStructure } from "../components/organisms/TreeStructure/TreeStructu
 import { useEditorSocketStore } from "../store/editorSocketStore";
 import { io } from "socket.io-client";
 import { BrowserTerminal } from "../components/molecules/BrowserTerminal/BrowserTerminal";
+import { useTerminalSocketStore } from "../store/terminalSocketStore";
 
 export const Playground = () => {
-  const { projectId: projectIdFromUrl } = useParams();
+    const { projectId: projectIdFromUrl } = useParams();
 
-  const { projectId, setProjectId } = useTreeStructureStore();
+    const { projectId, setProjectId } = useTreeStructureStore();
+    const { setEditorSocket, editorSocket } = useEditorSocketStore();
+    const { setTerminalSocket } = useTerminalSocketStore();
 
-  const { setEditorSocket } = useEditorSocketStore();
+    function fetchPort() {
+        console.log(editorSocket)
+        editorSocket.emit("getPort");
+        console.log("fetching port");
+    }
 
     useEffect(() => {
         if(projectIdFromUrl) {
@@ -24,9 +31,12 @@ export const Playground = () => {
                     projectId: projectIdFromUrl
                 }
             });
+
+            const ws = new WebSocket("ws://localhost:3000/terminal?projectId="+projectIdFromUrl);
+            setTerminalSocket(ws);
             setEditorSocket(editorSocketConn);
         }
-    }, [setProjectId, projectIdFromUrl, setEditorSocket]);
+    }, [setProjectId, projectIdFromUrl, setEditorSocket, setTerminalSocket]);
 
   return (
     <>
@@ -50,6 +60,13 @@ export const Playground = () => {
       </div>
       <EditorButton isActive={false} />
       <EditorButton isActive={true} />
+      <div>
+          <button
+              onClick={fetchPort}
+          >
+              getport
+          </button>
+      </div>
       <div>
         <BrowserTerminal />
       </div>
